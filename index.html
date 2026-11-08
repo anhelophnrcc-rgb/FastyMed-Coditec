@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FastyMed - Ecossistema Digital Farmacêutico em Franca-SP</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              teal: '#00a896',
+              darkTeal: '#028090',
+              deepBlue: '#05668d',
+              navy: '#023e8a',
+              accent: '#00b4d8',
+              lightBg: '#f4f9f9',
+              cardBg: '#e0f2f1'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #00a896;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #028090;
+    }
+    
+    /* Device frame simulation */
+    .mobile-frame {
+      width: 385px;
+      height: 780px;
+      border-radius: 40px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4), 0 0 0 12px #1e293b;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .camera-notch {
+      width: 140px;
+      height: 25px;
+      background-color: #1e293b;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 50;
+    }
+    
+    .pulse-glow {
+      animation: pulseGlow 2s infinite;
+    }
+    
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(0, 168, 150, 0.4); }
+      50% { box-shadow: 0 0 25px rgba(0, 168, 150, 0.8); }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-800 font-sans min-h-screen flex flex-col antialiased selection:bg-brand-teal selection:text-white">
+
+  <!-- TOP PRESENTATION CONTROLLER BANNER -->
+  <header class="bg-slate-800 border-b border-slate-700 text-white py-3 px-4 sm:px-8 sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-brand-teal p-2 rounded-xl text-white font-bold text-xl flex items-center justify-center w-10 h-10 shadow">
+          <i class="fa-solid fa-notes-medical"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-lg leading-tight tracking-wide text-white">FastyMed <span class="text-xs bg-brand-teal/30 text-brand-teal px-2 py-0.5 rounded-full border border-brand-teal/40 ml-2">CODITEC Fatec Franca</span></h1>
+          <p class="text-xs text-slate-400">Ecossistema Digital de Integração Farmacêutica em Franca-SP</p>
+        </div>
+      </div>
+
+      <!-- Mode Switcher Controls -->
+      <div class="flex items-center bg-slate-900 p-1 rounded-xl border border-slate-700">
+        <span class="text-xs text-slate-400 px-3 font-medium hidden sm:inline"><i class="fa-solid fa-sliders mr-1.5"></i>Modo de Exibição:</span>
+        <button id="btn-desktop-view" onclick="switchViewMode('desktop')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-brand-teal text-white shadow">
+          <i class="fa-solid fa-desktop"></i> Desktop Dashboard
+        </button>
+        <button id="btn-mobile-view" onclick="switchViewMode('mobile')" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all">
+          <i class="fa-solid fa-mobile-screen-button"></i> Simulação Smartphone
+        </button>
+      </div>
+
+      <!-- Quick Navigation Buttons -->
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-slate-400 font-medium hidden lg:inline">Etapa da Apresentação:</span>
+        <div class="flex bg-slate-900 rounded-lg p-1 border border-slate-700">
+          <button onclick="goToStep(1)" title="Busca & Preços" class="nav-step-btn px-2.5 py-1 text-xs font-medium rounded text-brand-teal bg-slate-800 border border-brand-teal/40">1. Busca</button>
+          <button onclick="goToStep(2)" title="Validação de Receita" class="nav-step-btn px-2.5 py-1 text-xs font-medium rounded text-slate-400 hover:text-white">2. Receita</button>
+          <button onclick="goToStep(3)" title="Carrinho & Checkout" class="nav-step-btn px-2.5 py-1 text-xs font-medium rounded text-slate-400 hover:text-white">3. Checkout</button>
+          <button onclick="goToStep(4)" title="Acompanhamento de Pedido" class="nav-step-btn px-2.5 py-1 text-xs font-medium rounded text-slate-400 hover:text-white">4. Pedido</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 flex items-center justify-center p-2 sm:p-6 lg:p-8 bg-slate-950 min-h-[calc(100vh-65px)]">
+
+    <!-- WRAPPER THAT CONVERTS BETWEEN DESKTOP & MOBILE SIMULATOR MODE -->
+    <div id="app-viewport-wrapper" class="w-full max-w-7xl transition-all duration-300 flex justify-center">
+
+      <!-- DEVICE CONTAINER -->
+      <div id="device-container" class="w-full bg-slate-100 rounded-2xl shadow-2xl overflow-hidden border border-slate-700 min-h-[750px] flex flex-col">
+        
+        <!-- CAMERA NOTCH (Visible only in mobile mode) -->
+        <div id="mobile-camera-notch" class="camera-notch hidden"></div>
+
+        <!-- APP HEADER / NAV -->
+        <header class="bg-gradient-to-r from-brand-deepBlue via-brand-darkTeal to-brand-teal text-white shadow-md z-20 sticky top-0">
+          <div class="px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="bg-white/15 backdrop-blur-md p-2 rounded-xl text-white flex items-center justify-center shadow-inner">
+                <i class="fa-solid fa-heart-pulse text-lg text-emerald-300"></i>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-extrabold text-xl tracking-tight">FastyMed</span>
+                  <span class="text-[10px] bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider">Franca-SP</span>
+                </div>
+                <p class="text-[11px] text-teal-100/80">Conectando pessoas, farmácias e saúde em segundos</p>
+              </div>
+            </div>
+
+            <!-- Location Selector & Info -->
+            <div class="flex items-center gap-3">
+              <div class="hidden sm:flex items-center gap-2 bg-black/20 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-full text-xs">
+                <i class="fa-solid fa-location-dot text-emerald-300"></i>
+                <span class="font-medium">Entregar em: <strong class="text-white">Franca, SP</strong></span>
+              </div>
+              
+              <!-- Cart Badge -->
+              <button onclick="goToStep(3)" class="relative bg-white/20 hover:bg-white/30 text-white p-2.5 rounded-xl transition-all flex items-center justify-center">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-counter" class="absolute -top-1.5 -right-1.5 bg-amber-400 text-slate-900 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow">2</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Process Stepper Bar -->
+          <div class="bg-slate-900/40 backdrop-blur-sm border-t border-white/10 px-4 py-2">
+            <div class="max-w-3xl mx-auto flex items-center justify-between text-xs">
+              
+              <div onclick="goToStep(1)" class="cursor-pointer step-indicator flex items-center gap-1.5 text-emerald-300 font-semibold" id="step-tab-1">
+                <span class="w-5 h-5 rounded-full bg-emerald-400 text-slate-900 flex items-center justify-center text-[10px] font-bold">1</span>
+                <span>Busca & Preços</span>
+              </div>
+              <div class="h-0.5 w-6 bg-white/20 rounded"></div>
+
+              <div onclick="goToStep(2)" class="cursor-pointer step-indicator flex items-center gap-1.5 text-white/60 hover:text-white" id="step-tab-2">
+                <span class="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center text-[10px] font-bold">2</span>
+                <span>Receita Digital</span>
+              </div>
+              <div class="h-0.5 w-6 bg-white/20 rounded"></div>
+
+              <div onclick="goToStep(3)" class="cursor-pointer step-indicator flex items-center gap-1.5 text-white/60 hover:text-white" id="step-tab-3">
+                <span class="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center text-[10px] font-bold">3</span>
+                <span>Checkout</span>
+              </div>
+              <div class="h-0.5 w-6 bg-white/20 rounded"></div>
+
+              <div onclick="goToStep(4)" class="cursor-pointer step-indicator flex items-center gap-1.5 text-white/60 hover:text-white" id="step-tab-4">
+                <span class="w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center text-[10px] font-bold">4</span>
+                <span>Acompanhamento</span>
+              </div>
+
+            </div>
+          </div>
+        </header>
+
+        <!-- APP CONTENT BODY (SWITCHABLE PAGES) -->
+        <div class="flex-1 bg-slate-50 overflow-y-auto p-4 sm:p-6">
+
+          <!-- PAGE 1: BUSCA E COMPARAÇÃO DE PREÇOS -->
+          <div id="page-1" class="page-view space-y-6">
+            
+            <!-- Hero Search Card -->
+            <div class="bg-gradient-to-br from-brand-deepBlue to-brand-darkTeal p-5 sm:p-6 rounded-2xl text-white shadow-md">
+              <div class="max-w-2xl">
+                <h2 class="text-xl sm:text-2xl font-bold tracking-tight">Economize e Encontre Estoque em Franca</h2>
+                <p class="text-xs sm:text-sm text-teal-100 mt-1">Compare medicamentos em tempo real entre as drogarias da cidade de Franca-SP com entrega rápida.</p>
+                
+                <!-- Search Inputs -->
+                <div class="mt-4 flex flex-col sm:flex-row gap-2">
+                  <div class="relative flex-1">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                    <input type="text" id="med-search-input" onkeyup="filterMedications()" placeholder="Digite o nome do remédio (ex: Dipirona, Paracetamol)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white text-slate-800 placeholder-slate-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-teal shadow-inner">
+                  </div>
+                  <div class="relative sm:w-48">
+                    <i class="fa-solid fa-location-dot absolute left-3.5 top-3.5 text-brand-teal"></i>
+                    <input type="text" value="Franca - SP" readonly class="w-full pl-10 pr-3 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white text-sm font-semibold cursor-default">
+                  </div>
+                </div>
+
+                <!-- Quick Categories -->
+                <div class="flex flex-wrap items-center gap-2 mt-4 text-xs">
+                  <span class="text-teal-200 font-medium">Categorias:</span>
+                  <button onclick="filterCategory('all')" class="cat-chip bg-white/20 hover:bg-white text-white hover:text-brand-deepBlue font-medium px-3 py-1 rounded-full transition-all">Todos</button>
+                  <button onclick="filterCategory('medicamento')" class="cat-chip bg-white/10 hover:bg-white text-white hover:text-brand-deepBlue font-medium px-3 py-1 rounded-full transition-all">Medicamentos</button>
+                  <button onclick="filterCategory('manipulado')" class="cat-chip bg-white/10 hover:bg-white text-white hover:text-brand-deepBlue font-medium px-3 py-1 rounded-full transition-all">Manipulados</button>
+                  <button onclick="filterCategory('uso-continuo')" class="cat-chip bg-white/10 hover:bg-white text-white hover:text-brand-deepBlue font-medium px-3 py-1 rounded-full transition-all">Uso Contínuo</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Market Banner / Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl flex items-center gap-3">
+                <div class="bg-emerald-500 text-white p-3 rounded-lg"><i class="fa-solid fa-store text-lg"></i></div>
+                <div>
+                  <h4 class="font-bold text-slate-800 text-sm">Farmácias Conectadas</h4>
+                  <p class="text-xs text-slate-600">+11 Drogarias Parceiras em Franca</p>
+                </div>
+              </div>
+              <div class="bg-sky-50 border border-sky-200 p-4 rounded-xl flex items-center gap-3">
+                <div class="bg-sky-500 text-white p-3 rounded-lg"><i class="fa-solid fa-bolt text-lg"></i></div>
+                <div>
+                  <h4 class="font-bold text-slate-800 text-sm">Entrega em Franca</h4>
+                  <p class="text-xs text-slate-600">Média de 25 a 45 minutos</p>
+                </div>
+              </div>
+              <div class="bg-teal-50 border border-teal-200 p-4 rounded-xl flex items-center gap-3">
+                <div class="bg-brand-teal text-white p-3 rounded-lg"><i class="fa-solid fa-shield-halved text-lg"></i></div>
+                <div>
+                  <h4 class="font-bold text-slate-800 text-sm">Conformidade Anvisa</h4>
+                  <p class="text-xs text-slate-600">RDC 44/2009 e ICP-Brasil</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- MAIN SEARCH RESULTS LIST & PHARMACY COMPARISON -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                  <i class="fa-solid fa-list-check text-brand-teal"></i>
+                  Resultados & Comparação de Preços em Franca
+                </h3>
+                <span class="text-xs font-semibold text-slate-500 bg-slate-200 px-2.5 py-1 rounded-full">Exibindo ofertas em tempo real</span>
+              </div>
+
+              <!-- MEDICATION CARDS CONTAINER -->
+              <div id="medications-list-container" class="space-y-4">
+
+                <!-- CARD 1: DIPIRONA MONOIDRATADA -->
+                <div class="med-item bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all" data-category="medicamento" data-name="dipirona monoidratada 500mg">
+                  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                      <div class="w-16 h-16 bg-teal-50 rounded-xl flex items-center justify-center text-brand-teal font-bold text-2xl border border-teal-100 flex-shrink-0">
+                        <i class="fa-solid fa-pills"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">Em Estoque</span>
+                          <span class="text-xs text-slate-400">Caixa com 20 comprimidos</span>
+                        </div>
+                        <h4 class="font-bold text-base text-slate-900 mt-0.5">Dipirona Monoidratada 500mg</h4>
+                        <p class="text-xs text-slate-500">Analgésico e antitérmico de rápida ação</p>
+                      </div>
+                    </div>
+
+                    <!-- Compare Pharmacy Prices -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex-1 max-w-xl">
+                      <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Preços por Drogaria em Franca:</span>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        
+                        <!-- Pharmacy Option A -->
+                        <div class="bg-white p-2.5 rounded-lg border-2 border-emerald-500 relative flex flex-col justify-between shadow-sm">
+                          <span class="absolute -top-2 right-2 bg-emerald-500 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded-full">Menor Preço</span>
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Drogaria São Paulo</p>
+                            <p class="text-[10px] text-slate-500">Centro (800m)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-emerald-600 text-sm">R$ 10,99</span>
+                            <button onclick="addToCart('Dipirona 500mg', 'Drogaria São Paulo', 10.99)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Pharmacy Option B -->
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Farmácia Farmavita</p>
+                            <p class="text-[10px] text-slate-500">Estação (1,4 km)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-slate-700 text-sm">R$ 14,50</span>
+                            <button onclick="addToCart('Dipirona 500mg', 'Farmácia Farmavita', 14.50)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Pharmacy Option C -->
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Drogaria Efigênia</p>
+                            <p class="text-[10px] text-slate-500">Cidade Nova (2,1 km)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-slate-700 text-sm">R$ 18,00</span>
+                            <button onclick="addToCart('Dipirona 500mg', 'Drogaria Efigênia', 18.00)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 2: PARACETAMOL 750MG -->
+                <div class="med-item bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all" data-category="medicamento" data-name="paracetamol 750mg">
+                  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                      <div class="w-16 h-16 bg-sky-50 rounded-xl flex items-center justify-center text-sky-600 font-bold text-2xl border border-sky-100 flex-shrink-0">
+                        <i class="fa-solid fa-capsules"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="bg-emerald-100 text-emerald-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">Em Estoque</span>
+                          <span class="text-xs text-slate-400">Blíster com 10 comprimidos</span>
+                        </div>
+                        <h4 class="font-bold text-base text-slate-900 mt-0.5">Paracetamol 750mg</h4>
+                        <p class="text-xs text-slate-500">Alívio de dores de cabeça e febre</p>
+                      </div>
+                    </div>
+
+                    <!-- Compare Pharmacy Prices -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex-1 max-w-xl">
+                      <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Preços por Drogaria em Franca:</span>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        
+                        <!-- Pharmacy Option A -->
+                        <div class="bg-white p-2.5 rounded-lg border-2 border-emerald-500 relative flex flex-col justify-between shadow-sm">
+                          <span class="absolute -top-2 right-2 bg-emerald-500 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded-full">Menor Preço</span>
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Drogaria São Paulo</p>
+                            <p class="text-[10px] text-slate-500">Centro (800m)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-emerald-600 text-sm">R$ 12,50</span>
+                            <button onclick="addToCart('Paracetamol 750mg', 'Drogaria São Paulo', 12.50)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Pharmacy Option B -->
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Farmácia Farmavita</p>
+                            <p class="text-[10px] text-slate-500">Estação (1,4 km)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-slate-700 text-sm">R$ 16,90</span>
+                            <button onclick="addToCart('Paracetamol 750mg', 'Farmácia Farmavita', 16.90)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Pharmacy Option C -->
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Drogaria Efigênia</p>
+                            <p class="text-[10px] text-slate-500">Cidade Nova (2,1 km)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-slate-700 text-sm">R$ 19,90</span>
+                            <button onclick="addToCart('Paracetamol 750mg', 'Drogaria Efigênia', 19.90)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- CARD 3: IBUPROFENO 400MG -->
+                <div class="med-item bg-white border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-sm hover:shadow-md transition-all" data-category="medicamento" data-name="ibuprofeno 400mg">
+                  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div class="flex items-start gap-4">
+                      <div class="w-16 h-16 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600 font-bold text-2xl border border-amber-100 flex-shrink-0">
+                        <i class="fa-solid fa-prescription-bottle-medical"></i>
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-2">
+                          <span class="bg-amber-100 text-amber-800 text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase">Exige Receita</span>
+                          <span class="text-xs text-slate-400">Caixa com 10 cápsulas líquidas</span>
+                        </div>
+                        <h4 class="font-bold text-base text-slate-900 mt-0.5">Ibuprofeno 400mg</h4>
+                        <p class="text-xs text-slate-500">Anti-inflamatório e analgésico potente</p>
+                      </div>
+                    </div>
+
+                    <!-- Compare Pharmacy Prices -->
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex-1 max-w-xl">
+                      <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-2">Preços por Drogaria em Franca:</span>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        
+                        <!-- Pharmacy Option A -->
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Drogaria São Paulo</p>
+                            <p class="text-[10px] text-slate-500">Centro (800m)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-slate-700 text-sm">R$ 22,00</span>
+                            <button onclick="addToCart('Ibuprofeno 400mg', 'Drogaria São Paulo', 22.00)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Pharmacy Option B -->
+                        <div class="bg-white p-2.5 rounded-lg border-2 border-emerald-500 relative flex flex-col justify-between shadow-sm">
+                          <span class="absolute -top-2 right-2 bg-emerald-500 text-white text-[9px] font-extrabold px-1.5 py-0.2 rounded-full">Menor Preço</span>
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Farmácia Farmavita</p>
+                            <p class="text-[10px] text-slate-500">Estação (1,4 km)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-emerald-600 text-sm">R$ 18,50</span>
+                            <button onclick="addToCart('Ibuprofeno 400mg', 'Farmácia Farmavita', 18.50)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- Pharmacy Option C -->
+                        <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex flex-col justify-between">
+                          <div>
+                            <p class="font-bold text-xs text-slate-800">Drogaria Efigênia</p>
+                            <p class="text-[10px] text-slate-500">Cidade Nova (2,1 km)</p>
+                          </div>
+                          <div class="mt-2 flex items-center justify-between">
+                            <span class="font-extrabold text-slate-700 text-sm">R$ 24,90</span>
+                            <button onclick="addToCart('Ibuprofeno 400mg', 'Drogaria Efigênia', 24.90)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                              Selecionar
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Bottom Navigation Bar to Step 2 -->
+            <div class="bg-gradient-to-r from-slate-900 to-brand-deepBlue text-white p-4 rounded-2xl flex items-center justify-between shadow-lg">
+              <div>
+                <h4 class="font-bold text-sm">Possui Receita Médica?</h4>
+                <p class="text-xs text-teal-200">Digitalize sua receita para envio direto às farmácias e manipulação.</p>
+              </div>
+              <button onclick="goToStep(2)" class="bg-brand-teal hover:bg-emerald-400 text-slate-900 font-extrabold text-xs px-4 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-2">
+                Digitalizar Receita <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- PAGE 2: DIGITALIZAÇÃO E VALIDAÇÃO DA RECEITA MÉDICA -->
+          <div id="page-2" class="page-view hidden space-y-6">
+            
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+              <div class="max-w-2xl mx-auto text-center">
+                <div class="w-14 h-14 bg-teal-100 text-brand-teal rounded-2xl flex items-center justify-center mx-auto mb-3 font-bold text-2xl">
+                  <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <h2 class="text-xl font-bold text-slate-900">Digitalização & Validação de Receita Médica</h2>
+                <p class="text-xs text-slate-500 mt-1">Conformidade total com a Resolução Anvisa RDC nº 44/2009 e Padrão ICP-Brasil.</p>
+              </div>
+
+              <!-- SCANNER / UPLOADER SIMULATOR INTERFACE -->
+              <div class="mt-6 max-w-xl mx-auto bg-slate-900 text-white rounded-2xl p-6 border-2 border-brand-teal relative overflow-hidden shadow-xl">
+                
+                <!-- SCANNING OVERLAY ANIMATION -->
+                <div id="scan-overlay" class="absolute inset-0 bg-brand-teal/10 flex flex-col items-center justify-center z-10 backdrop-blur-[1px] hidden">
+                  <div class="w-20 h-20 border-4 border-brand-teal border-t-transparent rounded-full animate-spin mb-3"></div>
+                  <p class="text-xs font-bold text-emerald-300">Validando Assinatura ICP-Brasil e Anvisa...</p>
+                </div>
+
+                <div class="text-center space-y-4">
+                  <!-- QR Code Scanner Window Box -->
+                  <div class="w-48 h-48 mx-auto border-2 border-dashed border-emerald-400 rounded-2xl flex flex-col items-center justify-center bg-slate-800/80 relative p-4 group cursor-pointer" onclick="simulateUpload()">
+                    <i class="fa-solid fa-camera text-3xl text-emerald-400 mb-2 group-hover:scale-110 transition-transform"></i>
+                    <p class="text-xs font-semibold text-slate-200">Escanear QR Code da Receita</p>
+                    <p class="text-[10px] text-slate-400 mt-1">ou clique para simular Upload (PDF/Foto)</p>
+                  </div>
+
+                  <!-- Upload Action Buttons -->
+                  <div class="flex flex-col sm:flex-row justify-center gap-3 pt-2">
+                    <button onclick="simulateUpload()" class="bg-brand-teal hover:bg-brand-darkTeal text-white font-bold text-xs px-4 py-2.5 rounded-xl transition-all flex items-center justify-center gap-2 shadow">
+                      <i class="fa-solid fa-cloud-arrow-up"></i> Fazer Upload de Foto / PDF
+                    </button>
+                    <button onclick="simulateUpload()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs px-4 py-2.5 rounded-xl transition-all border border-slate-700">
+                      <i class="fa-solid fa-file-medical"></i> Importar Arquivo
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SIMULATED VALIDATED PRESCRIPTION DATA CARD -->
+              <div id="validated-prescription-card" class="mt-6 max-w-xl mx-auto bg-emerald-50 border-2 border-emerald-400 rounded-2xl p-5 hidden">
+                <div class="flex items-center justify-between pb-3 border-b border-emerald-200">
+                  <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+                    <div>
+                      <h4 class="font-extrabold text-sm text-emerald-900">Receita Médica Validada com Sucesso</h4>
+                      <p class="text-[10px] text-emerald-700">Assinatura Digital ICP-Brasil: VÁLIDA ✓</p>
+                    </div>
+                  </div>
+                  <span class="text-[10px] bg-emerald-200 text-emerald-900 font-bold px-2 py-0.5 rounded-full">Anvisa RDC 44/2009</span>
+                </div>
+
+                <div class="mt-3 text-xs text-slate-700 space-y-1.5">
+                  <p><strong>Paciente:</strong> Ana Heloisa Leme Gabriel</p>
+                  <p><strong>Médico Prescritor:</strong> Dr. Claudio Eduardo Paiva (CRM/SP 123456)</p>
+                  <p><strong>Medicamento Prescrito:</strong> Dipirona Monoidratada 500mg + Ibuprofeno 400mg</p>
+                  <p><strong>Validade da Receita:</strong> Válida até 25/11/2026</p>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-emerald-200 flex justify-end">
+                  <button onclick="goToStep(3)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-2">
+                    Prosseguir para o Checkout <i class="fa-solid fa-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- PAGE 3: CARRINHO E CHECKOUT -->
+          <div id="page-3" class="page-view hidden space-y-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+              <!-- CART ITEMS LIST -->
+              <div class="lg:col-span-2 space-y-4">
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                  <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-cart-shopping text-brand-teal"></i>
+                    Itens Selecionados no Pedido
+                  </h3>
+
+                  <!-- CART ITEM LIST CONTAINER -->
+                  <div id="cart-items-wrapper" class="space-y-3">
+                    
+                    <!-- ITEM 1 -->
+                    <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center font-bold text-lg">
+                          <i class="fa-solid fa-pills"></i>
+                        </div>
+                        <div>
+                          <h4 class="font-bold text-xs text-slate-900">Dipirona Monoidratada 500mg</h4>
+                          <p class="text-[11px] text-slate-500">Drogaria São Paulo - Centro, Franca</p>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <span class="font-extrabold text-sm text-slate-900 block">R$ 10,99</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold">Em estoque</span>
+                      </div>
+                    </div>
+
+                    <!-- ITEM 2 -->
+                    <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                      <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center font-bold text-lg">
+                          <i class="fa-solid fa-prescription-bottle-medical"></i>
+                        </div>
+                        <div>
+                          <h4 class="font-bold text-xs text-slate-900">Ibuprofeno 400mg</h4>
+                          <p class="text-[11px] text-slate-500">Farmácia Farmavita - Estação, Franca</p>
+                          <span class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-bold">Receita Anexa ✓</span>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <span class="font-extrabold text-sm text-slate-900 block">R$ 18,50</span>
+                        <span class="text-[10px] text-emerald-600 font-semibold">Em estoque</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- DELIVERY ADDRESS IN FRANCA-SP -->
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                  <h4 class="font-bold text-sm text-slate-900 flex items-center gap-2 mb-3">
+                    <i class="fa-solid fa-truck-fast text-brand-teal"></i>
+                    Endereço de Entrega em Franca-SP
+                  </h4>
+                  <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                    <div>
+                      <p class="font-bold text-slate-800">Rua Doutor Júlio Cardoso, 1200 - Centro</p>
+                      <p class="text-slate-500">Franca - SP • CEP 14400-000</p>
+                    </div>
+                    <span class="text-brand-teal font-semibold text-xs cursor-pointer hover:underline">Alterar</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CHECKOUT SUMMARY & PAYMENT -->
+              <div class="space-y-4">
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                  <h3 class="font-bold text-base text-slate-900 mb-4 pb-2 border-b border-slate-100">Resumo do Pedido</h3>
+                  
+                  <div class="space-y-2 text-xs text-slate-600">
+                    <div class="flex justify-between">
+                      <span>Subtotal dos Medicamentos:</span>
+                      <span class="font-semibold text-slate-800">R$ 29,49</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span>Frete Express Franca:</span>
+                      <span class="font-semibold text-emerald-600">R$ 5,00</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span>Validação Regulatória Anvisa:</span>
+                      <span class="font-semibold text-emerald-600">Grátis</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-200 flex justify-between items-center text-sm font-extrabold text-slate-900">
+                      <span>Valor Total:</span>
+                      <span class="text-lg text-brand-deepBlue">R$ 34,49</span>
+                    </div>
+                  </div>
+
+                  <!-- PAYMENT METHODS -->
+                  <div class="mt-5 space-y-2">
+                    <span class="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Forma de Pagamento:</span>
+                    <label class="flex items-center justify-between p-2.5 rounded-xl border-2 border-brand-teal bg-teal-50/50 cursor-pointer text-xs">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" name="payment" checked class="text-brand-teal focus:ring-brand-teal">
+                        <span class="font-bold text-slate-800"><i class="fa-brands fa-pix text-emerald-600 mr-1"></i> Pix (Aprovação Instantânea)</span>
+                      </div>
+                      <span class="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.5 rounded">Desconto</span>
+                    </label>
+
+                    <label class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 cursor-pointer text-xs">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" name="payment" class="text-brand-teal focus:ring-brand-teal">
+                        <span class="font-semibold text-slate-700"><i class="fa-solid fa-credit-card text-sky-600 mr-1"></i> Cartão de Crédito</span>
+                      </div>
+                    </label>
+
+                    <label class="flex items-center justify-between p-2.5 rounded-xl border border-slate-200 hover:border-slate-300 cursor-pointer text-xs">
+                      <div class="flex items-center gap-2">
+                        <input type="radio" name="payment" class="text-brand-teal focus:ring-brand-teal">
+                        <span class="font-semibold text-slate-700"><i class="fa-solid fa-hand-holding-dollar text-amber-600 mr-1"></i> Pagar na Entrega</span>
+                      </div>
+                    </label>
+                  </div>
+
+                  <!-- FINALIZE ORDER BUTTON -->
+                  <button onclick="finishOrder()" class="mt-5 w-full bg-brand-teal hover:bg-brand-darkTeal text-white font-extrabold text-sm py-3.5 rounded-xl transition-all shadow-md flex items-center justify-center gap-2">
+                    Finalizar Pedido <i class="fa-solid fa-circle-check"></i>
+                  </button>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- PAGE 4: ACOMPANHAMENTO DE PEDIDO EM TEMPO REAL -->
+          <div id="page-4" class="page-view hidden space-y-6">
+            
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div>
+                  <span class="bg-brand-teal/10 text-brand-teal text-xs font-bold px-3 py-1 rounded-full border border-brand-teal/20">Pedido #FRK-2026-9812</span>
+                  <h2 class="text-xl font-bold text-slate-900 mt-2">Acompanhamento do Pedido em Tempo Real</h2>
+                  <p class="text-xs text-slate-500">Estimativa de Entrega em Franca: <strong>25 - 35 minutos</strong></p>
+                </div>
+                <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-2 rounded-xl text-emerald-800 text-xs font-bold">
+                  <i class="fa-solid fa-truck-ramp-box text-emerald-600 text-base"></i>
+                  <span>Status: Em Separação nas Farmácias</span>
+                </div>
+              </div>
+
+              <!-- TIMELINE OF DISPATCH STAGES -->
+              <div class="mt-6">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-4">Etapas da Operação Farmacêutica:</h4>
+                
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+                  
+                  <!-- Step 1 Timeline -->
+                  <div class="bg-emerald-50 border-2 border-emerald-500 p-3 rounded-xl flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                      <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-bold text-xs flex items-center justify-center">1</span>
+                      <i class="fa-solid fa-check text-emerald-600"></i>
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="font-bold text-xs text-slate-900">Pedido Confirmado</h5>
+                      <p class="text-[10px] text-slate-500 mt-0.5">Pagamento aprovado via Pix</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 2 Timeline -->
+                  <div class="bg-emerald-50 border-2 border-emerald-500 p-3 rounded-xl flex flex-col justify-between">
+                    <div class="flex items-center justify-between">
+                      <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-bold text-xs flex items-center justify-center">2</span>
+                      <i class="fa-solid fa-check text-emerald-600"></i>
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="font-bold text-xs text-slate-900">Receita Validada</h5>
+                      <p class="text-[10px] text-slate-500 mt-0.5">Assinatura ICP-Brasil OK</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 3 Timeline -->
+                  <div class="bg-amber-50 border-2 border-amber-400 p-3 rounded-xl flex flex-col justify-between pulse-glow">
+                    <div class="flex items-center justify-between">
+                      <span class="w-6 h-6 rounded-full bg-amber-500 text-white font-bold text-xs flex items-center justify-center">3</span>
+                      <i class="fa-solid fa-spinner animate-spin text-amber-600"></i>
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="font-bold text-xs text-slate-900">Separação de Produtos</h5>
+                      <p class="text-[10px] text-amber-800 font-semibold mt-0.5">Em andamento na farmácia</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 4 Timeline -->
+                  <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex flex-col justify-between opacity-60">
+                    <div class="flex items-center justify-between">
+                      <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center">4</span>
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="font-bold text-xs text-slate-800">Em Rota de Entrega</h5>
+                      <p class="text-[10px] text-slate-400 mt-0.5">Entregador parceiro</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 5 Timeline -->
+                  <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex flex-col justify-between opacity-60">
+                    <div class="flex items-center justify-between">
+                      <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center">5</span>
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="font-bold text-xs text-slate-800">Entregue ao Cliente</h5>
+                      <p class="text-[10px] text-slate-400 mt-0.5">Confirmação em Franca</p>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- SIMULATED LIVE MAP DISPLAY IN FRANCA -->
+              <div class="mt-6">
+                <h4 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Localização e Rota das Farmácias em Franca-SP:</h4>
+                <div class="bg-slate-900 rounded-2xl h-64 relative overflow-hidden flex items-center justify-center border border-slate-800 shadow-inner">
+                  
+                  <!-- SIMULATED MAP CANVAS DESIGN -->
+                  <div class="absolute inset-0 opacity-40 bg-[radial-gradient(#00a896_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                  
+                  <!-- Map Pins -->
+                  <div class="absolute top-1/4 left-1/3 text-center">
+                    <div class="bg-brand-teal text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md mb-1 animate-bounce">
+                      Drogaria São Paulo (R$ 10,99)
+                    </div>
+                    <i class="fa-solid fa-location-dot text-brand-teal text-2xl"></i>
+                  </div>
+
+                  <div class="absolute top-1/2 right-1/4 text-center">
+                    <div class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md mb-1">
+                      Farmavita (R$ 18,50)
+                    </div>
+                    <i class="fa-solid fa-location-dot text-amber-500 text-2xl"></i>
+                  </div>
+
+                  <div class="absolute bottom-1/4 left-1/2 text-center">
+                    <div class="bg-emerald-400 text-slate-900 text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-md mb-1">
+                      Seu Endereço (Franca-SP)
+                    </div>
+                    <i class="fa-solid fa-house-user text-emerald-400 text-2xl"></i>
+                  </div>
+
+                  <!-- Central Label -->
+                  <div class="bg-slate-950/80 backdrop-blur-md px-4 py-2 rounded-xl border border-brand-teal/40 text-center z-10">
+                    <p class="text-xs text-slate-300 font-semibold"><i class="fa-solid fa-map-location-dot text-brand-teal mr-1"></i> Cobertura Digital Integrada Franca-SP</p>
+                    <p class="text-[10px] text-slate-400">Servidores sincronizados via FastyMed API</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- NOTIFICATION TOAST MSG -->
+  <div id="toast-msg" class="fixed bottom-5 right-5 bg-slate-900 text-white border border-brand-teal px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg" id="toast-icon"></i>
+    <span text-xs font-semibold id="toast-text">Item adicionado com sucesso!</span>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC FOR INTERACTIVITY AND PRESENTATION SIMULATION -->
+  <script>
+    // State Variables
+    let currentStep = 1;
+    let viewMode = 'desktop';
+
+    // Step Navigation Function
+    function goToStep(step) {
+      currentStep = step;
+
+      // Hide all pages
+      document.querySelectorAll('.page-view').forEach(page => {
+        page.classList.add('hidden');
+      });
+
+      // Show targeted page
+      const targetPage = document.getElementById(`page-${step}`);
+      if (targetPage) {
+        targetPage.classList.remove('hidden');
+      }
+
+      // Update Header Stepper Indicators
+      for (let i = 1; i <= 4; i++) {
+        const tab = document.getElementById(`step-tab-${i}`);
+        if (tab) {
+          if (i === step) {
+            tab.className = "cursor-pointer step-indicator flex items-center gap-1.5 text-emerald-300 font-semibold";
+            tab.querySelector('span').className = "w-5 h-5 rounded-full bg-emerald-400 text-slate-900 flex items-center justify-center text-[10px] font-bold";
+          } else if (i < step) {
+            tab.className = "cursor-pointer step-indicator flex items-center gap-1.5 text-emerald-100/90";
+            tab.querySelector('span').className = "w-5 h-5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[10px] font-bold";
+          } else {
+            tab.className = "cursor-pointer step-indicator flex items-center gap-1.5 text-white/60 hover:text-white";
+            tab.querySelector('span').className = "w-5 h-5 rounded-full bg-white/20 text-white flex items-center justify-center text-[10px] font-bold";
+          }
+        }
+      }
+
+      // Scroll device container to top
+      const devContainer = document.getElementById('device-container');
+      if (devContainer) devContainer.scrollTop = 0;
+    }
+
+    // Switch between Desktop View & Mobile Phone Frame Simulator Mode
+    function switchViewMode(mode) {
+      viewMode = mode;
+      const wrapper = document.getElementById('app-viewport-wrapper');
+      const device = document.getElementById('device-container');
+      const notch = document.getElementById('mobile-camera-notch');
+      
+      const btnDesktop = document.getElementById('btn-desktop-view');
+      const btnMobile = document.getElementById('btn-mobile-view');
+
+      if (mode === 'mobile') {
+        wrapper.className = "w-full flex justify-center py-4";
+        device.className = "mobile-frame bg-slate-100 flex flex-col overflow-hidden border-2 border-slate-700";
+        notch.classList.remove('hidden');
+
+        btnMobile.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-brand-teal text-white shadow";
+        btnDesktop.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all";
+      } else {
+        wrapper.className = "w-full max-w-7xl transition-all duration-300 flex justify-center";
+        device.className = "w-full bg-slate-100 rounded-2xl shadow-2xl overflow-hidden border border-slate-700 min-h-[750px] flex flex-col";
+        notch.classList.add('hidden');
+
+        btnDesktop.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all bg-brand-teal text-white shadow";
+        btnMobile.className = "flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-400 hover:text-white transition-all";
+      }
+    }
+
+    // Dynamic Search Filter for Medications
+    function filterMedications() {
+      const query = document.getElementById('med-search-input').value.toLowerCase();
+      const items = document.querySelectorAll('.med-item');
+
+      items.forEach(item => {
+        const name = item.getAttribute('data-name');
+        if (name.includes(query)) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    }
+
+    // Filter by Categories
+    function filterCategory(cat) {
+      const items = document.querySelectorAll('.med-item');
+      items.forEach(item => {
+        const category = item.getAttribute('data-category');
+        if (cat === 'all' || category === cat) {
+          item.classList.remove('hidden');
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+    }
+
+    // Toast Notification System
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('toast-msg');
+      const toastText = document.getElementById('toast-text');
+      const toastIcon = document.getElementById('toast-icon');
+
+      toastText.innerText = message;
+      if (isSuccess) {
+        toastIcon.className = "fa-solid fa-circle-check text-emerald-400 text-lg";
+      } else {
+        toastIcon.className = "fa-solid fa-triangle-exclamation text-amber-400 text-lg";
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // Add Item to Cart Action
+    function addToCart(medName, pharmacy, price) {
+      showToast(`Adicionado ao Carrinho: ${medName} (${pharmacy}) - R$ ${price.toFixed(2)}`);
+    }
+
+    // Simulate Prescription Scan/Upload
+    function simulateUpload() {
+      const overlay = document.getElementById('scan-overlay');
+      const resultCard = document.getElementById('validated-prescription-card');
+
+      overlay.classList.remove('hidden');
+
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        resultCard.classList.remove('hidden');
+        showToast("Receita médica validada segundo ICP-Brasil e Anvisa RDC 44/2009!");
+      }, 1500);
+    }
+
+    // Finalize Checkout Order Action
+    function finishOrder() {
+      showToast("Pedido gerado com sucesso! Redirecionando para acompanhamento...");
+      setTimeout(() => {
+        goToStep(4);
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
