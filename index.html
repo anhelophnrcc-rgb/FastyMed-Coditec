@@ -583,16 +583,21 @@
               <!-- CART ITEMS LIST -->
               <div class="lg:col-span-2 space-y-4">
                 <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-                  <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2 mb-4">
-                    <i class="fa-solid fa-cart-shopping text-brand-teal"></i>
-                    Itens Selecionados no Pedido
-                  </h3>
+                  <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
+                      <i class="fa-solid fa-cart-shopping text-brand-teal"></i>
+                      Itens Selecionados no Pedido
+                    </h3>
+                    <button onclick="limparCarrinho()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 text-xs font-semibold px-3 py-1.5 rounded-xl transition-all flex items-center gap-1.5">
+                      <i class="fa-solid fa-trash-can"></i> Limpar Carrinho
+                    </button>
+                  </div>
 
                   <!-- CART ITEM LIST CONTAINER -->
                   <div id="cart-items-wrapper" class="space-y-3">
                     
                     <!-- ITEM 1 -->
-                    <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                    <div class="cart-row flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center font-bold text-lg">
                           <i class="fa-solid fa-pills"></i>
@@ -609,7 +614,7 @@
                     </div>
 
                     <!-- ITEM 2 -->
-                    <div class="flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
+                    <div class="cart-row flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
                       <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center font-bold text-lg">
                           <i class="fa-solid fa-prescription-bottle-medical"></i>
@@ -653,7 +658,7 @@
                   <div class="space-y-2 text-xs text-slate-600">
                     <div class="flex justify-between">
                       <span>Subtotal dos Medicamentos:</span>
-                      <span class="font-semibold text-slate-800">R$ 29,49</span>
+                      <span id="cart-subtotal" class="font-semibold text-slate-800">R$ 29,49</span>
                     </div>
                     <div class="flex justify-between">
                       <span>Frete Express Franca:</span>
@@ -665,7 +670,7 @@
                     </div>
                     <div class="pt-3 border-t border-slate-200 flex justify-between items-center text-sm font-extrabold text-slate-900">
                       <span>Valor Total:</span>
-                      <span class="text-lg text-brand-deepBlue">R$ 34,49</span>
+                      <span id="cart-total" class="text-lg text-brand-deepBlue">R$ 34,49</span>
                     </div>
                   </div>
 
@@ -843,7 +848,7 @@
   <!-- NOTIFICATION TOAST MSG -->
   <div id="toast-msg" class="fixed bottom-5 right-5 bg-slate-900 text-white border border-brand-teal px-4 py-3 rounded-xl shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 transform translate-y-20 opacity-0">
     <i class="fa-solid fa-circle-check text-emerald-400 text-lg" id="toast-icon"></i>
-    <span text-xs font-semibold id="toast-text">Item adicionado com sucesso!</span>
+    <span class="text-xs font-semibold" id="toast-text">Item adicionado com sucesso!</span>
   </div>
 
   <!-- JAVASCRIPT LOGIC FOR INTERACTIVITY AND PRESENTATION SIMULATION -->
@@ -969,6 +974,21 @@
       showToast(`Adicionado ao Carrinho: ${medName} (${pharmacy}) - R$ ${price.toFixed(2)}`);
     }
 
+    // Limpar Carrinho Function
+    function limparCarrinho() {
+      const wrapper = document.getElementById('cart-items-wrapper');
+      wrapper.innerHTML = `
+        <div class="text-center py-8 text-slate-400 text-xs">
+          <i class="fa-solid fa-cart-shopping text-2xl mb-2 text-slate-300"></i>
+          <p>O seu carrinho está vazio.</p>
+        </div>
+      `;
+      document.getElementById('cart-subtotal').innerText = "R$ 0,00";
+      document.getElementById('cart-total').innerText = "R$ 5,00"; // apenas o frete ou zero
+      document.getElementById('cart-counter').innerText = "0";
+      showToast("Carrinho esvaziado com sucesso!");
+    }
+
     // Simulate Prescription Scan/Upload
     function simulateUpload() {
       const overlay = document.getElementById('scan-overlay');
@@ -986,6 +1006,8 @@
     // Finalize Checkout Order Action
     function finishOrder() {
       showToast("Pedido gerado com sucesso! Redirecionando para acompanhamento...");
+      // Limpa o carrinho automaticamente ao finalizar a compra
+      limparCarrinho();
       setTimeout(() => {
         goToStep(4);
       }, 1200);
