@@ -168,7 +168,7 @@
               <!-- Cart Badge -->
               <button onclick="goToStep(3)" class="relative bg-white/20 hover:bg-white/30 text-white p-2.5 rounded-xl transition-all flex items-center justify-center">
                 <i class="fa-solid fa-cart-shopping"></i>
-                <span id="cart-counter" class="absolute -top-1.5 -right-1.5 bg-amber-400 text-slate-900 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow">2</span>
+                <span id="cart-counter" class="absolute -top-1.5 -right-1.5 bg-amber-400 text-slate-900 font-extrabold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow">1</span>
               </button>
             </div>
           </div>
@@ -309,7 +309,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-emerald-600 text-sm">R$ 10,99</span>
-                            <button onclick="addToCart('Dipirona 500mg', 'Drogaria São Paulo', 10.99, false)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Dipirona Monoidratada 500mg', 'Drogaria São Paulo', 10.99, false)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -323,7 +323,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-slate-700 text-sm">R$ 14,50</span>
-                            <button onclick="addToCart('Dipirona 500mg', 'Farmácia Farmavita', 14.50, false)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Dipirona Monoidratada 500mg', 'Farmácia Farmavita', 14.50, false)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -337,7 +337,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-slate-700 text-sm">R$ 18,00</span>
-                            <button onclick="addToCart('Dipirona 500mg', 'Drogaria Efigênia', 18.00, false)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Dipirona Monoidratada 500mg', 'Drogaria Efigênia', 18.00, false)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -380,7 +380,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-emerald-600 text-sm">R$ 12,50</span>
-                            <button onclick="addToCart('Paracetamol 750mg', 'Drogaria São Paulo', 12.50, true)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Paracetamol 750mg', 'Drogaria São Paulo', 12.50, true)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -394,7 +394,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-slate-700 text-sm">R$ 16,90</span>
-                            <button onclick="addToCart('Paracetamol 750mg', 'Farmácia Farmavita', 16.90, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Paracetamol 750mg', 'Farmácia Farmavita', 16.90, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -408,7 +408,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-slate-700 text-sm">R$ 19,90</span>
-                            <button onclick="addToCart('Paracetamol 750mg', 'Drogaria Efigênia', 19.90, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Paracetamol 750mg', 'Drogaria Efigênia', 19.90, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -449,7 +449,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-slate-700 text-sm">R$ 22,00</span>
-                            <button onclick="addToCart('Ibuprofeno 400mg', 'Drogaria São Paulo', 22.00, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Ibuprofeno 400mg', 'Drogaria São Paulo', 22.00, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -464,7 +464,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-emerald-600 text-sm">R$ 18,50</span>
-                            <button onclick="addToCart('Ibuprofeno 400mg', 'Farmácia Farmavita', 18.50, true)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Ibuprofeno 400mg', 'Farmácia Farmavita', 18.50, true)" class="bg-brand-teal hover:bg-brand-darkTeal text-white text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -478,7 +478,7 @@
                           </div>
                           <div class="mt-2 flex items-center justify-between">
                             <span class="font-extrabold text-slate-700 text-sm">R$ 24,90</span>
-                            <button onclick="addToCart('Ibuprofeno 400mg', 'Drogaria Efigênia', 24.90, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
+                            <button onclick="selectItem('Ibuprofeno 400mg', 'Drogaria Efigênia', 24.90, true)" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs px-2.5 py-1 rounded-md font-semibold transition-colors">
                               Selecionar
                             </button>
                           </div>
@@ -562,12 +562,12 @@
                 <div class="mt-3 text-xs text-slate-700 space-y-1.5">
                   <p><strong>Paciente:</strong> Ana Heloisa Leme Gabriel</p>
                   <p><strong>Médico Prescritor:</strong> Dr. Claudio Eduardo Paiva (CRM/SP 123456)</p>
-                  <p><strong>Medicamento Prescrito:</strong> Itens exigem receita validada</p>
+                  <p><strong>Medicamento Prescrito:</strong> Item controlado validado</p>
                   <p><strong>Validade da Receita:</strong> Válida até 25/11/2026</p>
                 </div>
 
                 <div class="mt-4 pt-3 border-t border-emerald-200 flex justify-end">
-                  <button onclick="goToStep(3)" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-2">
+                  <button onclick="avancarAposReceita()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-all flex items-center gap-2">
                     Prosseguir para o Checkout <i class="fa-solid fa-arrow-right"></i>
                   </button>
                 </div>
@@ -598,38 +598,20 @@
                   <!-- CART ITEM LIST CONTAINER -->
                   <div id="cart-items-wrapper" class="space-y-3">
                     
-                    <!-- ITEM 1 -->
+                    <!-- ITEM DINÂMICO -->
                     <div class="cart-row flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
                       <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center font-bold text-lg">
+                        <div id="cart-item-icon" class="w-10 h-10 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center font-bold text-lg">
                           <i class="fa-solid fa-pills"></i>
                         </div>
                         <div>
-                          <h4 class="font-bold text-xs text-slate-900">Dipirona Monoidratada 500mg</h4>
-                          <p class="text-[11px] text-slate-500">Drogaria São Paulo - Centro, Franca</p>
-                          <span class="text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.2 rounded font-bold">Sem Receita Necessária</span>
+                          <h4 id="cart-item-name" class="font-bold text-xs text-slate-900">Nenhum item selecionado</h4>
+                          <p id="cart-item-pharmacy" class="text-[11px] text-slate-500">Selecione um medicamento na busca</p>
+                          <span id="cart-prescription-badge" class="text-[9px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-bold hidden">Pendente</span>
                         </div>
                       </div>
                       <div class="text-right">
-                        <span class="font-extrabold text-sm text-slate-900 block">R$ 10,99</span>
-                        <span class="text-[10px] text-emerald-600 font-semibold">Em estoque</span>
-                      </div>
-                    </div>
-
-                    <!-- ITEM 2 -->
-                    <div class="cart-row flex items-center justify-between p-3.5 bg-slate-50 rounded-xl border border-slate-200">
-                      <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center font-bold text-lg">
-                          <i class="fa-solid fa-prescription-bottle-medical"></i>
-                        </div>
-                        <div>
-                          <h4 class="font-bold text-xs text-slate-900">Ibuprofeno 400mg</h4>
-                          <p class="text-[11px] text-slate-500">Farmácia Farmavita - Estação, Franca</p>
-                          <span id="cart-prescription-status" class="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-bold">Exige Receita (Pendente ⚠️)</span>
-                        </div>
-                      </div>
-                      <div class="text-right">
-                        <span class="font-extrabold text-sm text-slate-900 block">R$ 18,50</span>
+                        <span id="cart-item-price" class="font-extrabold text-sm text-slate-900 block">R$ 0,00</span>
                         <span class="text-[10px] text-emerald-600 font-semibold">Em estoque</span>
                       </div>
                     </div>
@@ -661,7 +643,7 @@
                   <div class="space-y-2 text-xs text-slate-600">
                     <div class="flex justify-between">
                       <span>Subtotal dos Medicamentos:</span>
-                      <span id="cart-subtotal" class="font-semibold text-slate-800">R$ 29,49</span>
+                      <span id="cart-subtotal" class="font-semibold text-slate-800">R$ 0,00</span>
                     </div>
                     <div class="flex justify-between">
                       <span>Frete Express Franca:</span>
@@ -673,7 +655,7 @@
                     </div>
                     <div class="pt-3 border-t border-slate-200 flex justify-between items-center text-sm font-extrabold text-slate-900">
                       <span>Valor Total:</span>
-                      <span id="cart-total" class="text-lg text-brand-deepBlue">R$ 34,49</span>
+                      <span id="cart-total" class="text-lg text-brand-deepBlue">R$ 5,00</span>
                     </div>
                   </div>
 
@@ -750,14 +732,14 @@
                   </div>
 
                   <!-- Step 2 Timeline -->
-                  <div class="bg-emerald-50 border-2 border-emerald-500 p-3 rounded-xl flex flex-col justify-between">
+                  <div id="timeline-step-2" class="bg-emerald-50 border-2 border-emerald-500 p-3 rounded-xl flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                       <span class="w-6 h-6 rounded-full bg-emerald-500 text-white font-bold text-xs flex items-center justify-center">2</span>
                       <i class="fa-solid fa-check text-emerald-600"></i>
                     </div>
                     <div class="mt-2">
-                      <h5 class="font-bold text-xs text-slate-900">Receita Validada</h5>
-                      <p class="text-[10px] text-slate-500 mt-0.5">Assinatura ICP-Brasil OK</p>
+                      <h5 class="font-bold text-xs text-slate-900">Validação Regulatória</h5>
+                      <p id="timeline-recipe-text" class="text-[10px] text-slate-500 mt-0.5">Não aplicável (Sem receita)</p>
                     </div>
                   </div>
 
@@ -809,16 +791,9 @@
                   <!-- Map Pins -->
                   <div class="absolute top-1/4 left-1/3 text-center">
                     <div class="bg-brand-teal text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md mb-1 animate-bounce">
-                      Drogaria São Paulo (R$ 10,99)
+                      Drogaria Selecionada
                     </div>
                     <i class="fa-solid fa-location-dot text-brand-teal text-2xl"></i>
-                  </div>
-
-                  <div class="absolute top-1/2 right-1/4 text-center">
-                    <div class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md mb-1">
-                      Farmavita (R$ 18,50)
-                    </div>
-                    <i class="fa-solid fa-location-dot text-amber-500 text-2xl"></i>
                   </div>
 
                   <div class="absolute bottom-1/4 left-1/2 text-center">
@@ -859,7 +834,15 @@
     // State Variables
     let currentStep = 1;
     let viewMode = 'desktop';
-    let receitaValidada = false; // Controle se a receita exigida foi validada
+    
+    // Armazena dados do item selecionado
+    let itemSelecionado = {
+      nome: "Dipirona Monoidratada 500mg",
+      farmacia: "Drogaria São Paulo - Centro, Franca",
+      preco: 10.99,
+      exigeReceita: false
+    };
+    let receitaValidada = false;
 
     // Step Navigation Function
     function goToStep(step) {
@@ -893,7 +876,6 @@
         }
       }
 
-      // Scroll device container to top
       const devContainer = document.getElementById('device-container');
       if (devContainer) devContainer.scrollTop = 0;
     }
@@ -973,29 +955,60 @@
       }, 3000);
     }
 
-    // Add Item to Cart Action (with requiresPrescription check)
-    function addToCart(medName, pharmacy, price, requiresPrescription) {
-      let msg = `Adicionado: ${medName} (${pharmacy}) - R$ ${price.toFixed(2)}`;
-      if (requiresPrescription) {
-        msg += " [Exige Receita Médica]";
+    // Selecionar o item e decidir o fluxo inteligente (Com ou Sem Receita)
+    function selectItem(medName, pharmacy, price, exigeReceita) {
+      itemSelecionado = {
+        nome: medName,
+        farmacia: pharmacy,
+        preco: price,
+        exigeReceita: exigeReceita
+      };
+      receitaValidada = false; // reseta a validação
+
+      // Atualiza os dados visuais no carrinho (Step 3)
+      document.getElementById('cart-item-name').innerText = medName;
+      document.getElementById('cart-item-pharmacy').innerText = `${pharmacy} - Franca, SP`;
+      document.getElementById('cart-item-price').innerText = `R$ ${price.toFixed(2)}`;
+      document.getElementById('cart-subtotal').innerText = `R$ ${price.toFixed(2)}`;
+      document.getElementById('cart-total').innerText = `R$ ${(price + 5.00).toFixed(2)}`;
+      document.getElementById('cart-counter').innerText = "1";
+
+      const badge = document.getElementById('cart-prescription-badge');
+      if (exigeReceita) {
+        badge.className = "text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-bold inline-block mt-1";
+        badge.innerText = "Exige Receita Médica ⚠️";
+        badge.classList.remove('hidden');
       } else {
-        msg += " [Sem Receita]";
+        badge.className = "text-[9px] bg-sky-100 text-sky-800 px-1.5 py-0.2 rounded font-bold inline-block mt-1";
+        badge.innerText = "Sem Receita Necessária ✓";
+        badge.classList.remove('hidden');
       }
-      showToast(msg);
+
+      showToast(`Selecionado: ${medName} (${pharmacy})`);
+
+      // FLUXO INTELIGENTE:
+      if (exigeReceita) {
+        // Se exige receita, vai para a Etapa 2 (Validação)
+        setTimeout(() => {
+          goToStep(2);
+        }, 800);
+      } else {
+        // Se NÃO exige receita (ex: Dipirona), PULA A ETAPA 2 e vai direto para o Checkout (Etapa 3)!
+        setTimeout(() => {
+          goToStep(3);
+        }, 800);
+      }
     }
 
     // Limpar Carrinho Function
     function limparCarrinho() {
-      const wrapper = document.getElementById('cart-items-wrapper');
-      wrapper.innerHTML = `
-        <div class="text-center py-8 text-slate-400 text-xs">
-          <i class="fa-solid fa-cart-shopping text-2xl mb-2 text-slate-300"></i>
-          <p>O seu carrinho está vazio.</p>
-        </div>
-      `;
+      document.getElementById('cart-item-name').innerText = "Nenhum item selecionado";
+      document.getElementById('cart-item-pharmacy').innerText = "Selecione um medicamento na busca";
+      document.getElementById('cart-item-price').innerText = "R$ 0,00";
       document.getElementById('cart-subtotal').innerText = "R$ 0,00";
       document.getElementById('cart-total').innerText = "R$ 5,00";
       document.getElementById('cart-counter').innerText = "0";
+      document.getElementById('cart-prescription-badge').classList.add('hidden');
       showToast("Carrinho esvaziado com sucesso!");
     }
 
@@ -1009,29 +1022,36 @@
       setTimeout(() => {
         overlay.classList.add('hidden');
         resultCard.classList.remove('hidden');
-        receitaValidada = true; // Marca como validada
-        
-        // Atualiza status visual no carrinho se houver itens que exigem receita
-        const statusSpan = document.getElementById('cart-prescription-status');
-        if(statusSpan) {
-          statusSpan.className = "text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-bold";
-          statusSpan.innerText = "Receita Validada ✓";
-        }
-
+        receitaValidada = true; // Marca receita como validada com sucesso
         showToast("Receita médica validada segundo ICP-Brasil e Anvisa RDC 44/2009!");
       }, 1500);
     }
 
-    // Finalize Checkout Order Action (Verifica se itens que exigem receita foram validados)
+    // Avança da tela de receita para o Checkout (Etapa 3) após validar
+    function avancarAposReceita() {
+      const badge = document.getElementById('cart-prescription-badge');
+      badge.className = "text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-bold inline-block mt-1";
+      badge.innerText = "Receita Validada ✓";
+      goToStep(3);
+    }
+
+    // Finalize Checkout Order Action
     function finishOrder() {
-      // Como o carrinho atual simula itens que exigem receita (como o Ibuprofeno/Paracetamol)
-      // Se a receita não foi validada, o sistema avisa e manda para a etapa 2
-      if (!receitaValidada) {
-        showToast("Atenção: Há itens no pedido que exigem receita médica!", false);
+      // Dupla checagem: Se o item exige receita e ela ainda não foi validada, manda para a etapa 2
+      if (itemSelecionado.exigeReceita && !receitaValidada) {
+        showToast("Este medicamento exige validação de receita médica!", false);
         setTimeout(() => {
-          goToStep(2); // Vai para a tela de digitalizar receita
-        }, 1500);
+          goToStep(2);
+        }, 1200);
         return;
+      }
+
+      // Atualiza o texto da linha do tempo no passo 4 dependendo se teve receita ou não
+      const recipeTimelineText = document.getElementById('timeline-recipe-text');
+      if (itemSelecionado.exigeReceita) {
+        recipeTimelineText.innerText = "Assinatura ICP-Brasil OK";
+      } else {
+        recipeTimelineText.innerText = "Não aplicável (Sem receita)";
       }
 
       showToast("Pedido gerado com sucesso! Redirecionando para acompanhamento...");
